@@ -1,4 +1,5 @@
 import { screen, render, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import ColorButton from ".";
 
@@ -15,18 +16,22 @@ test("initial button status", () => {
 
 // 버튼을 1번 2번 클릭했을때
 describe("clicks button", () => {
-  test("click button once", () => {
+  test("click button once", async () => {
+    const user = userEvent.setup();
     render(<ColorButton />);
 
     const colorButton = screen.getByRole("button", { name: "비활성화 하기" });
     const checkbox = screen.getByRole("checkbox", { name: "체크박스" });
 
-    fireEvent.click(colorButton);
+    await user.click(colorButton);
 
+    expect(
+      screen.getByRole("button", { name: "활성화 하기" })
+    ).toBeInTheDocument();
     expect(colorButton).toHaveStyle({ backgroundColor: "#00f" });
     expect(checkbox).toBeDisabled();
 
-    fireEvent.click(checkbox);
+    await user.click(checkbox);
     expect(checkbox).toBeDisabled();
   });
 
