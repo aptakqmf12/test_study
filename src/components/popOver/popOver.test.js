@@ -1,4 +1,4 @@
-import { screen, render } from "@testing-library/react";
+import { screen, render, act, waitFor } from "@testing-library/react";
 import useEvent from "@testing-library/user-event";
 import PopOver from ".";
 
@@ -22,8 +22,8 @@ test("버튼에 hover 하여 팝오버가 나타남", async () => {
   expect(modal).toBeInTheDocument();
 
   // 한꺼번에도 test가능
-  // await user.unhover(button);
-  // expect(modal).not.toBeInTheDocument();
+  await user.unhover(button);
+  expect(modal).not.toBeInTheDocument();
 });
 
 test("버튼에 unhover 하여 팝오버가 사라짐", async () => {
@@ -36,5 +36,5 @@ test("버튼에 unhover 하여 팝오버가 사라짐", async () => {
   // 사라진 Element라서 query
   const modal = screen.queryByText("popOver");
 
-  expect(modal).not.toBeInTheDocument();
+  await waitFor(() => expect(modal).not.toBeInTheDocument());
 });
