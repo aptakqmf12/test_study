@@ -6,14 +6,16 @@ export default function MockTest() {
   useEffect(() => {
     fetch("http://localhost:3030/todos")
       .then((res) => res.json())
-      .then((json) => console.log(json));
+      .then((json) => {
+        setList(json);
+      });
   }, []);
 
   return (
     <div>
       <h2>MockTest</h2>
 
-      <ul>
+      <ul role="listbox">
         {list?.map((leaf, i) => (
           <li key={i}>
             {leaf.name} / {leaf.old} 입니다

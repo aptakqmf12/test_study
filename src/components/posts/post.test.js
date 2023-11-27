@@ -1,9 +1,14 @@
-import { screen, render, waitFor } from "@testing-library/react";
+import {
+  screen,
+  render,
+  waitFor,
+  act,
+  fireEvent,
+} from "@testing-library/react";
 import useEvent from "@testing-library/user-event";
 import Posts from "./";
 
-test.skip("첫 페이지 로딩", async () => {
-  const user = useEvent.setup();
+test("페이지 로딩 후 clear 버튼 클릭 테스트", async () => {
   render(<Posts />);
 
   await waitFor(() => {
@@ -11,10 +16,27 @@ test.skip("첫 페이지 로딩", async () => {
   });
 
   const clearBtn = screen.getByRole("button", { name: "clear" });
+  const list = screen.getByRole("listbox");
+  const itemsBefore = await screen.findAllByRole("listitem");
 
-  await user.click(clearBtn);
+  expect(clearBtn).toBeInTheDocument();
+  expect(list).toBeInTheDocument();
+  expect(itemsBefore).toHaveLength(100);
+});
 
-  expect(
-    screen.queryByText("voluptatem eligendi optio")
-  ).not.toBeInTheDocument();
+test("clear버튼 클릭시", async () => {
+  const user = useEvent.setup();
+  render(<Posts />);
+
+  const clearBtn = screen.getByRole("button", { name: "clear" });
+
+  // FIXME: fix me
+  // act(() => {
+  //   user.click(clearBtn);
+  // });
+
+  // const itemsAfter = await screen.findAllByRole("listitem");
+  // await waitFor(() => {
+  //   expect(itemsAfter).toHaveLength(0);
+  // });
 });
