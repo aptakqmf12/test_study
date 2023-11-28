@@ -31,12 +31,12 @@ test("clear버튼 클릭시", async () => {
   const clearBtn = screen.getByRole("button", { name: "clear" });
 
   // FIXME: fix me
-  // act(() => {
-  //   user.click(clearBtn);
-  // });
+  act(() => {
+    user.click(clearBtn);
+  });
 
-  // const itemsAfter = await screen.findAllByRole("listitem");
-  // await waitFor(() => {
-  //   expect(itemsAfter).toHaveLength(0);
-  // });
+  const itemsAfter = await screen.findAllByRole("listitem");
+  await waitFor(() => {
+    expect(itemsAfter).toHaveLength(0);
+  });
 });
