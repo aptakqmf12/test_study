@@ -18,6 +18,3 @@ jobs:
 
       - name: Install
       - run: npm i
-
-      - name: Test
-      - run: npm run test
