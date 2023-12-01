@@ -1,40 +1,39 @@
-import {
-  screen,
-  render,
-  waitFor,
-  act,
-  fireEvent,
-} from "@testing-library/react";
+import { screen, render, waitFor, act } from "@testing-library/react";
 import useEvent from "@testing-library/user-event";
 import Posts from "./";
 
-test("페이지 로딩 후 clear 버튼 클릭 테스트", async () => {
+const renderPosts = () => {
   render(<Posts />);
+};
+
+test("페이지 로딩시", async () => {
+  renderPosts();
 
   await waitFor(() => {
     expect(screen.getByText("voluptatem eligendi optio")).toBeInTheDocument();
   });
 
-  const clearBtn = screen.getByRole("button", { name: "clear" });
+  const clearBtn = screen.getByRole("button", { name: /clear/i });
   const list = screen.getByRole("listbox");
-  const itemsBefore = await screen.findAllByRole("listitem");
+  const liList = await screen.findAllByRole("listitem");
 
   expect(clearBtn).toBeInTheDocument();
   expect(list).toBeInTheDocument();
-  expect(itemsBefore).toHaveLength(100);
+  expect(liList).toHaveLength(100);
 });
 
-test("clear버튼 클릭시", async () => {
+test("clear버튼 클릭시 아이템 개수는 0개가 된다", async () => {
   const user = useEvent.setup();
-  await render(<Posts />);
+  renderPosts();
 
   const clearBtn = screen.getByRole("button", { name: /clear/i });
-
-  await user.click(clearBtn);
-
   expect(clearBtn).toBeInTheDocument();
+  await act(async () => {
+    await user.click(clearBtn);
+  });
 
-  const liList = await screen.findAllByRole("listitem");
-
-  expect(liList).toHaveLength(0);
+  const liList = screen.queryAllByRole("listitem"); // ajax 이후 btn event이므로 query사용
+  await waitFor(() => {
+    expect(liList).toHaveLength(0);
+  });
 });
