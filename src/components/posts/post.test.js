@@ -26,17 +26,15 @@ test("페이지 로딩 후 clear 버튼 클릭 테스트", async () => {
 
 test("clear버튼 클릭시", async () => {
   const user = useEvent.setup();
-  render(<Posts />);
+  await render(<Posts />);
 
-  const clearBtn = screen.getByRole("button", { name: "clear" });
+  const clearBtn = screen.getByRole("button", { name: /clear/i });
 
-  // FIXME: fix me
-  act(() => {
-    user.click(clearBtn);
-  });
+  await user.click(clearBtn);
 
-  const itemsAfter = await screen.findAllByRole("listitem");
-  await waitFor(() => {
-    expect(itemsAfter).toHaveLength(0);
-  });
+  expect(clearBtn).toBeInTheDocument();
+
+  const liList = await screen.findAllByRole("listitem");
+
+  expect(liList).toHaveLength(0);
 });
