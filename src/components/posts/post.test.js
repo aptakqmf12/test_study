@@ -1,5 +1,5 @@
 import { screen, render, waitFor, act } from "@testing-library/react";
-import useEvent from "@testing-library/user-event";
+import userEvent from "@testing-library/user-event";
 import Posts from "./";
 
 const renderPosts = () => {
@@ -23,7 +23,7 @@ test("페이지 로딩시", async () => {
 });
 
 test("clear버튼 클릭시 아이템 개수는 0개가 된다", async () => {
-  const user = useEvent.setup();
+  const user = userEvent.setup();
   renderPosts();
 
   const clearBtn = screen.getByRole("button", { name: /clear/i });
